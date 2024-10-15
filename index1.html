@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>removebg</title>
+    <link rel="stylesheet" href="index1.css">
+    <style>
+        * {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+        .canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="nav-logo">
+                <div class="logo">
+                    <img src="removeBG.png" alt="">
+                </div>
+            </div>
+            <div class="liftoff">
+                <img src="liftoff.png" alt="">
+            </div>
+        </div>
+    </header>
+
+    <div class="section">
+        <div class="remove">
+            <h1 style="font-size: 2rem;">REMOVE BACKGROUND IMAGE</h1>
+            <h2 style="font-size: 1.3rem;">100% Automatically and Free</h2>
+        </div>
+        <div class="box" id="box">
+            <div class="box-content">
+                <img src="upload.png" alt="">
+                <p>Drag and drop image here</p>
+                <p>Or</p>
+                <input type="file" id="imageInput" accept="image/*" hidden capture/>
+                <label for="imageInput" class="select-image">Select Image</label>
+                <button class="upload-button" onclick="imageUpload()">Upload</button>
+                <button class="download" onclick="downloadFile()">Download</button>
+            </div>
+            <img src="" alt="" id="image" style="display: none;">
+        </div>
+        <canvas id="canvas" class="canvas"></canvas>
+        <br>
+        <button onclick="toggleBrush()" class="toggle">Magic Brush</button>
+    </div>
+
+    <script>
+        const rmimage = document.getElementById('image');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let imageUrl;
+        let isDrawing = false;
+        let isBrushActive = false;
+
+        function imageUpload() {
+            const fileInput = document.getElementById('imageInput');
+            const image = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append("image_file", image);
+            formData.append('size', 'auto');
+
+            const apiKey = "oYyteuAixMzXJ5noJ177REcb";
+            fetch('https://api.remove.bg/v1.0/removebg', {
+                method: 'POST',
+                headers: {
+                    'X-Api-Key': apiKey,
+                },
+                body: formData
+            })
+            .then(function(response) {
+                return response.blob();
+            })
+            .then(function(blob) {
+                console.log(blob);
+                const url = URL.createObjectURL(blob);
+                imageUrl = url;
+                const img = new Image();
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = url;
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+
+            console.log("clicked");
+        }
+
+        function downloadFile() {
+            
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            tempCtx.fillStyle = 'green';
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+             tempCtx.drawImage(canvas, 0, 0);
+            const dataURL = tempCanvas.toDataURL('image/png');
+
+            
+            const a = document.createElement('a');
+            a.href = dataURL;
+            a.download = 'edited-image.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function toggleBrush() {
+            isBrushActive = !isBrushActive;
+            if (isBrushActive) {
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mousemove', draw);
+            } else {
+                canvas.removeEventListener('mousedown', startDrawing);
+                canvas.removeEventListener('mouseup', stopDrawing);
+                canvas.removeEventListener('mousemove', draw);
+            }
+        }
+
+        function startDrawing(event) {
+            isDrawing = true;
+            draw(event); 
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath(); 
+        }
+
+        function draw(event) {
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.lineWidth = 50; 
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'green'; 
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+
+            // Draw green background
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = 'green';
+            ctx.fillRect(x, y, ctx.lineWidth, ctx.lineWidth);
+        }
+    </script>
+</body>
+</html>

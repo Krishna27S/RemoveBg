@@ -1,0 +1,122 @@
+.navbar {
+    height: 70px;
+    background-color: #fdfdfd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+     
+}
+.nav-logo{
+    align-items: flex-end;
+    color: black;
+
+
+}
+.box{
+    width: 600px;
+    background-color: #dbeafe;
+    border-radius: 20px;
+    /* margin-left: 83px; */
+    /* margin-top: 150px; */
+    text-align: center;
+}
+
+.box-content{
+    padding-top: 50px;
+    
+}
+.upload-button {
+   
+    background-color: #0277bd;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 130px;
+    height: 40px;
+
+}
+
+.remove{
+    margin-left: 150px;
+    /* background: #dbeafe; */
+    /* border-radius: 20px; */
+    /* padding-left: 50px; */
+    /* width: 304px;*/
+
+}
+
+.section{
+   display: flex;
+   align-items: center;
+   margin-top: 100px;
+}
+.logo{
+    height: 90px;
+    margin-right: 1100px;
+}
+.liftoff{
+    height: 90px;
+}
+
+.select-image{
+    background-color: #0277bd;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 20px;
+    width: 140px;
+    height: 34px;
+    display: inline-block;
+    
+    padding-top: 5px;
+}
+
+.download{
+    background-color: #0277bd;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 20px;
+    width: 140px;
+    height: 40px;
+
+}
+
+
+.container{
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+
+}
+
+.toggle{
+    background-color: #0277bd;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 20px;
+    width: 175px;
+    height: 65px;
+    margin-top: 300px;
+    /* margin-right: 45px;*/
+
+    
+}
+
+.canvas{
+    border: inset;
+    border-color: black;
+    border-radius: 20px;
+    margin-left: 28px;
+    width: 464px;
+    height: 200px;
+    
+}
